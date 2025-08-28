@@ -1,0 +1,230 @@
+{
+  "datasets": [
+    {
+      "name": "126c16ad",
+      "displayName": "Netflix Title Types and Their Counts",
+      "queryLines": [
+        "SELECT \r\n",
+        "  type, \r\n",
+        "  COUNT(*) AS total_titles\r\n",
+        "FROM netflix_titles\r\n",
+        "WHERE type IN ('Movie', 'TV Show')\r\n",
+        "GROUP BY type;\r\n"
+      ]
+    },
+    {
+      "name": "350e7056",
+      "displayName": "Netflix Content Types by Release Year",
+      "queryLines": [
+        "SELECT \r\n",
+        "    release_year,\r\n",
+        "    type,\r\n",
+        "    COUNT(*) AS total_titles\r\n",
+        "FROM netflix_titles\r\n",
+        "WHERE release_year IS NOT NULL\r\n",
+        "GROUP BY release_year, type\r\n",
+        "ORDER BY release_year ASC;\r\n"
+      ]
+    },
+    {
+      "name": "31063e4d",
+      "displayName": "Top Genres in Netflix Titles by Popularity",
+      "queryLines": [
+        "WITH genre_split AS (\r\n",
+        "    SELECT \r\n",
+        "        explode(split(listed_in, ',')) AS genre\r\n",
+        "    FROM netflix_titles\r\n",
+        "    WHERE listed_in IS NOT NULL\r\n",
+        ")\r\n",
+        "SELECT \r\n",
+        "    trim(genre) AS genre,\r\n",
+        "    COUNT(*) AS total_count\r\n",
+        "FROM genre_split\r\n",
+        "GROUP BY trim(genre)\r\n",
+        "ORDER BY total_count DESC\r\n",
+        "LIMIT 10;\r\n"
+      ]
+    }
+  ],
+  "pages": [
+    {
+      "name": "dc61e57d",
+      "displayName": "Untitled page",
+      "layout": [
+        {
+          "widget": {
+            "name": "2b2e05f8",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "126c16ad",
+                  "fields": [
+                    {
+                      "name": "type",
+                      "expression": "`type`"
+                    },
+                    {
+                      "name": "sum(total_titles)",
+                      "expression": "SUM(`total_titles`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "widgetType": "bar",
+              "encodings": {
+                "x": {
+                  "fieldName": "type",
+                  "scale": {
+                    "type": "categorical",
+                    "sort": {
+                      "by": "y-reversed"
+                    }
+                  },
+                  "displayName": "type"
+                },
+                "y": {
+                  "fieldName": "sum(total_titles)",
+                  "scale": {
+                    "type": "quantitative"
+                  },
+                  "displayName": "Sum of total_titles"
+                }
+              },
+              "frame": {
+                "title": "Total Titles by Type",
+                "showTitle": true
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 4,
+            "width": 2,
+            "height": 6
+          }
+        },
+        {
+          "widget": {
+            "name": "64460fa5",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "350e7056",
+                  "fields": [
+                    {
+                      "name": "release_year",
+                      "expression": "`release_year`"
+                    },
+                    {
+                      "name": "total_titles",
+                      "expression": "`total_titles`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "version": 1,
+              "widgetType": "forecast-line",
+              "encodings": {
+                "x": {
+                  "fieldName": "release_year",
+                  "scale": {
+                    "type": "quantitative"
+                  },
+                  "displayName": "release_year"
+                },
+                "y": {
+                  "prediction": {
+                    "fieldName": "total_titles",
+                    "displayName": "total_titles"
+                  },
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                }
+              },
+              "frame": {
+                "showTitle": true,
+                "title": " Content Added Over the Years"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 0,
+            "width": 6,
+            "height": 4
+          }
+        },
+        {
+          "widget": {
+            "name": "3db673e3",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "31063e4d",
+                  "fields": [
+                    {
+                      "name": "sum(total_count)",
+                      "expression": "SUM(`total_count`)"
+                    },
+                    {
+                      "name": "genre",
+                      "expression": "`genre`"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "widgetType": "bar",
+              "encodings": {
+                "x": {
+                  "fieldName": "sum(total_count)",
+                  "scale": {
+                    "type": "quantitative"
+                  },
+                  "displayName": "Sum of total_count"
+                },
+                "y": {
+                  "fieldName": "genre",
+                  "scale": {
+                    "type": "categorical"
+                  },
+                  "displayName": "genre"
+                }
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Top 10 Genres"
+              }
+            }
+          },
+          "position": {
+            "x": 2,
+            "y": 4,
+            "width": 4,
+            "height": 6
+          }
+        }
+      ],
+      "pageType": "PAGE_TYPE_CANVAS"
+    }
+  ],
+  "uiSettings": {
+    "theme": {
+      "widgetHeaderAlignment": "ALIGNMENT_UNSPECIFIED"
+    }
+  }
+}
