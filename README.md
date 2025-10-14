@@ -1,65 +1,123 @@
+
 # 📺 Netflix Movies & TV Shows Analysis
 
 ## 🔹 Overview
-This project analyzes the **Netflix Movies and TV Shows dataset** available on [Kaggle](https://www.kaggle.com/datasets/shivamb/netflix-shows).  
-The goal is to perform **SQL-based analysis** and generate insights into the distribution of content by type, country, release year, and genre.  
 
-The analysis was done using **Databricks (PySpark + SQL)** and exported into Jupyter Notebook (`netflix.ipynb`) and Python script (`netflix.py`).
+This project analyzes the **Netflix Movies and TV Shows dataset** available on [Kaggle](https://www.kaggle.com/datasets/shivamb/netflix-shows).
+The goal is to perform **SQL-based analysis** to uncover insights about Netflix content, including the distribution of movies and TV shows, popular genres, release trends, and country-wise availability.
 
----
-
-## 📂 Project Files
-- `netflix.ipynb` → Jupyter Notebook with SQL + analysis  
-- `netflix.py` → Python script exported from notebook  
-- `README.md` → Project documentation  
-- Dataset Source: [Kaggle - Netflix Movies and TV Shows](https://www.kaggle.com/datasets/shivamb/netflix-shows)
 
 ---
 
-## 🔍 Analysis Covered
-- Total number of Movies vs TV Shows  
-- Most common genres on Netflix  
-- Year-wise content release trend  
-- Country-wise content distribution  
-- Longest-running TV shows and oldest movies  
+## 🔍 Analysis Performed
+
+Using SQL queries, the following analyses were performed on the dataset:
+
+1. **Movies vs TV Shows**
+
+   ```sql
+   SELECT type, COUNT(*) AS total_titles
+   FROM netflix_titles
+   GROUP BY type;
+   ```
+
+   * Counts total titles by type.
+   * Helps understand the proportion of Movies vs TV Shows on Netflix.
+
+2. **Top Countries with Most Content**
+
+   ```sql
+   SELECT country, COUNT(*) AS total
+   FROM netflix_titles
+   WHERE country IS NOT NULL
+   GROUP BY country
+   ORDER BY total DESC
+   LIMIT 10;
+   ```
+
+   * Shows which countries produce the most Netflix content.
+
+3. **Most Common Genres**
+
+   ```sql
+   SELECT listed_in AS genre, COUNT(*) AS total
+   FROM netflix_titles
+   GROUP BY genre
+   ORDER BY total DESC
+   LIMIT 10;
+   ```
+
+   * Identifies the genres that dominate Netflix content.
+
+4. **Content Release Trends**
+
+   ```sql
+   SELECT release_year, COUNT(*) AS total
+   FROM netflix_titles
+   GROUP BY release_year
+   ORDER BY release_year DESC;
+   ```
+
+   * Tracks the number of titles released each year.
+
+5. **Top Countries by Content (with ranking)**
+
+   ```sql
+   SELECT country,
+          COUNT(*) AS total,
+          RANK() OVER (ORDER BY COUNT(*) DESC) AS rank
+   FROM netflix_titles
+   WHERE country IS NOT NULL
+   GROUP BY country;
+   ```
+
+   * Assigns a rank to countries based on the number of titles they produce.
 
 ---
 
 ## 📊 Dashboard
-An interactive dashboard has been built in **Databricks** to visualize the findings.  
+
+An interactive dashboard has been built in **Databricks** to visualize these insights:
+
+* Movies vs TV Shows distribution
+* Top genres and countries
+* Year-wise release trends
+* Top 5 countries by content production
+
 👉 [View the Dashboard](https://dbc-e262f608-67b4.cloud.databricks.com/dashboardsv3/01f08105e03c152ea939ec4bdbea26be/published?o=1843048436549062)
+
+<img width="1912" height="940" alt="image" src="https://github.com/user-attachments/assets/54741eeb-d6fb-4f4b-bad2-e72718832d75" />
 
 ---
 
 ## 🛠️ Tools & Technologies
-- **Databricks** (PySpark + SQL)  
-- **Python** (pandas, matplotlib, seaborn)  
-- **Jupyter Notebook**  
-- **GitHub** for version control  
+
+* **Databricks** (PySpark + SQL)
+* **Jupyter Notebook** (`netflix.ipynb` #in databricks query can retrieved as jypternotebook file )
+* **Python** (`netflix.py`#in databricks this file magic command from databricks)
+* **GitHub** for version control
 
 ---
 
-## 🚀 How to Run
-1. Clone this repo:
-   ```bash
-   git clone https://github.com/faheeem30/netflix-sql-project.git
-````
+## ⚡ Key Insights
 
-2. Open the `netflix.ipynb` file in Jupyter or upload to Databricks.
-3. Install required libraries:
-
-   ```bash
-   pip install pandas numpy matplotlib seaborn pyspark
-   ```
-4. Run the cells to reproduce analysis.
+* Movies dominate the Netflix library compared to TV Shows.
+* The USA produces the highest number of Netflix titles.
+* Drama, Comedies, and Documentaries are the most common genres.
+* Netflix content production has increased significantly over the years.
 
 ---
 
-## 📌 Author
+## 📁 Dataset
 
-👤 **Mohamed Faheem**
+* Source: [Kaggle - Netflix Movies and TV Shows](https://www.kaggle.com/datasets/shivamb/netflix-shows)
+* Columns include: `title`, `type`, `country`, `release_year`, `listed_in` (genres), `duration`, etc.
 
-* GitHub: [faheeem30](https://github.com/faheeem30)
+---
+
+
+
+
 
 
 
