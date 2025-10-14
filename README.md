@@ -72,6 +72,10 @@ Using SQL queries, the following analyses were performed on the dataset:
    ```
 
    * Assigns a rank to countries based on the number of titles they produce.
+<img width="1916" height="941" alt="image" src="https://github.com/user-attachments/assets/e21ee71c-df7e-48d1-a2d6-0d62e73dbd9f" />
+<img width="1366" height="528" alt="image" src="https://github.com/user-attachments/assets/9062b137-858c-4f46-bed5-074e014e1fd6" />
+<img width="1391" height="577" alt="image" src="https://github.com/user-attachments/assets/6559352c-8aa0-4382-9d14-4614a039b8d9" />
+<img width="1325" height="561" alt="image" src="https://github.com/user-attachments/assets/78c23e93-7c66-40b3-857a-54a4abd2ae14" />
 
 ---
 
