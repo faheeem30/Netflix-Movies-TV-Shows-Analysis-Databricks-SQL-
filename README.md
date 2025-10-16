@@ -86,12 +86,7 @@ Using SQL queries, the following analyses were performed on the dataset:
 
 ## 📊 Dashboard
 
-An interactive dashboard has been built in **Databricks** to visualize these insights:
 
-* Movies vs TV Shows distribution
-* Top genres and countries
-* Year-wise release trends
-* Top 5 countries by content production
 
 👉 [View the Dashboard](https://dbc-e262f608-67b4.cloud.databricks.com/dashboardsv3/01f08105e03c152ea939ec4bdbea26be/published?o=1843048436549062)
 
